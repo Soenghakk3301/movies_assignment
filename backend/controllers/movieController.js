@@ -30,10 +30,10 @@ const getMovieById = async (req, res) => {
   const { id } = req.params
   const movie = await Movie.findByPk(id)
 
-  //   checkPermissions(req.user, movie)
+  checkPermissions(req.user, movie)
 
   if (!movie) {
-    return res.status(StatusCodes.NOT_FOUND).json({ error: 'Movie not found' })
+    return res.status(StatusCodes.NOT_FOUND).json({ msg: 'Movie not found' })
   }
 
   res.json(movie)
@@ -59,8 +59,9 @@ const addMovie = async (req, res) => {
     director,
     year,
     image: imageName,
-    userId,
+    UserId: userId,
   })
+
   res
     .status(StatusCodes.CREATED)
     .json({ message: 'Movie added successfully', movie })
