@@ -1,4 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
+import CustomAPIError from '../errors/custom-api.js'
 import Movie from '../models/Movie.js'
 import User from '../models/User.js'
 import { checkPermissions } from '../utils/checkPermissions.js'
@@ -53,6 +54,10 @@ const addMovie = async (req, res) => {
   }
 
   const imageName = saveImage(imageFile) // Implement the saveImage function
+
+  if (!userId) {
+    throw new CustomAPIError.BadRequestError('User Id is Empty.')
+  }
 
   const movie = await Movie.create({
     title,
